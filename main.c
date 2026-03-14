@@ -53,6 +53,8 @@ void initVulkan(VkInstance* instanceHandle){
 void mainLoop(GLFWwindow* window){
 	while(!glfwWindowShouldClose(window)){
 		glfwPollEvents();
+        fprintf(stdout, "Running...\n");
+        fprintf(stdout, "Ctrl-C to terminate\n");
 	}
 }
 
