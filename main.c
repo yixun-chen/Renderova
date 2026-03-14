@@ -6,7 +6,7 @@
 #define OVA_WINDOW_WIDTH  800
 #define OVA_WINDOW_HEIGHT 600
 
-void ova_InitWindow(GLFWwindow** window){
+void initWindow(GLFWwindow** window){
 	glfwInit();
 
 	glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
@@ -15,30 +15,30 @@ void ova_InitWindow(GLFWwindow** window){
 	*window = glfwCreateWindow(OVA_WINDOW_WIDTH, OVA_WINDOW_HEIGHT, "Vulkan", NULL, NULL);
 }
 
-void ova_InitVulkan(){}
+void initVulkan(){}
 
-void ova_MainLoop(GLFWwindow* window){
+void mainLoop(GLFWwindow* window){
 	while(!glfwWindowShouldClose(window)){
 		glfwPollEvents();
 	}
 }
 
-void ova_Cleanup(GLFWwindow* window){
+void cleanup(GLFWwindow* window){
 	glfwDestroyWindow(window);
 
 	glfwTerminate();
 }
 
-void ova_Run(){
-	GLFWwindow* ovaWindow;		// ovaWindow ptr stores the window's handle created by glfw
-	ova_InitWindow(&ovaWindow);
-	ova_InitVulkan();
-	ova_MainLoop(ovaWindow);
-	ova_Cleanup(ovaWindow);
+void run(){
+	GLFWwindow* window;		// window ptr stores the window's handle created by glfw
+	initWindow(&window);
+	initVulkan();
+	mainLoop(window);
+	cleanup(window);
 }
 
 int main(){
-	ova_Run();
+	run();
 	
 	return EXIT_SUCCESS;
 }
