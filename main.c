@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
+#include <stdbool.h>
 
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
@@ -12,7 +13,7 @@
 #define WIDTH  800
 #define HEIGHT 600
 
-void createInstance(VkInstance* instanceHandle){
+bool createInstance(VkInstance* instanceHandle){
     VkApplicationInfo appInfo = {
         .sType              = VK_STRUCTURE_TYPE_APPLICATION_INFO,
         .pNext              = EJS_NULL,
@@ -41,8 +42,10 @@ void createInstance(VkInstance* instanceHandle){
 
     if(vkCreateInstance(&createInfo, EJS_NULL, instanceHandle) != VK_SUCCESS){
         fprintf(stderr, "Failed to create instance!");
-        exit(1);
+        return false;
     }
+
+	return true;
 }
 
 void initWindow(GLFWwindow** window){
@@ -54,8 +57,11 @@ void initWindow(GLFWwindow** window){
 	*window = glfwCreateWindow(WIDTH, HEIGHT, "Vulkan", EJS_NULL, EJS_NULL);
 }
 
-void initVulkan(VkInstance* instanceHandle){
-    createInstance(instanceHandle);
+bool initVulkan(VkInstance* instanceHandle){
+    if(createInstance(instanceHandle) == false){
+		return false;
+	}
+	return true;
 }
 
 void mainLoop(GLFWwindow* window){
@@ -74,20 +80,26 @@ void cleanup(GLFWwindow* windowHandle, VkInstance instanceHandle){
 	glfwTerminate();
 }
 
-void run(void){
+bool run(void){
 	GLFWwindow* window;		// window ptr stores the window's handle created by glfw
 	initWindow(&window);
 
     VkInstance instance;    // Handle to the Vulkan instance object
-	initVulkan(&instance);
+	if(initVulkan(&instance) == false){
+		return false;
+	}
 
 	mainLoop(window);
 
 	cleanup(window, instance);
+
+	return true;
 }
 
 int main(void){
-	run();
+	if(run() == false){
+		return EXIT_FAILURE;
+	}
 	
 	return EXIT_SUCCESS;
 }
