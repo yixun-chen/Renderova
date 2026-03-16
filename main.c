@@ -30,10 +30,13 @@ void createInstance(VkInstance* instanceHandle){
 
     VkInstanceCreateInfo createInfo = {
         .sType                      = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO,
+		.pNext						= EJS_NULL,
+		.flags						= 0x0,
         .pApplicationInfo           = &appInfo,
-        .ppEnabledExtensionNames    = glfwExtensions,
-        .enabledExtensionCount      = glfwExtensionCount,
         .enabledLayerCount          = 0,
+		.ppEnabledLayerNames		= EJS_NULL,
+	    .enabledExtensionCount      = glfwExtensionCount,
+        .ppEnabledExtensionNames    = glfwExtensions,
     };
 
     if(vkCreateInstance(&createInfo, EJS_NULL, instanceHandle) != VK_SUCCESS){
